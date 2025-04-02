@@ -1,0 +1,22 @@
+[supervisord]
+nodaemon=true
+user=root
+logfile=/app/data/supervisord.log
+logfile_maxbytes=50MB
+logfile_backups=10
+
+[program:telegram_bot_api]
+command=/usr/local/bin/telegram-bot-api --api-id=%(ENV_API_ID)s --api-hash=%(ENV_API_HASH)s --local --dir=/app/data --temp-dir=/app/data/temp --log=/app/data/bot-api.log --http-port=${BOT_API_PORT}
+autostart=true
+autorestart=true
+priority=20
+stdout_logfile=/app/data/telegram_bot_api.log
+stderr_logfile=/app/data/telegram_bot_api_err.log
+
+[program:nginx]
+command=nginx -g "daemon off;"
+autostart=true
+autorestart=true
+priority=30
+stdout_logfile=/app/data/nginx.log
+stderr_logfile=/app/data/nginx_err.log
